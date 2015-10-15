@@ -122,5 +122,7 @@ public class BaseAction extends ActionSupport
         }
     }
 
-
+    public BaseAction getAction(){
+        return this;
+    }
 }
