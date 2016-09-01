@@ -22,12 +22,15 @@
         <!--根据需要自动创建表-->
         <property name="hbm2ddl.auto">update</property>
 
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
 
-        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.format_sql">false</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/slsxpt</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <!--<property name="connection.url">jdbc:mysql://localhost:3306/slsxpt?zeroDateTimeBehavior=convertToNull</property>-->
+        <!--<property name="connection.driver_class">com.mysql.jdbc.Driver</property>-->
         <mapping class="org.lyh.app.entitys.CategoryEntity"/>
         <mapping class="org.lyh.app.entitys.UserEntity"/>
-        <mapping class="org.lyh.app.entitys.ProjectEntity"/>
         <mapping class="org.lyh.app.entitys.ViewEntity"/>
         <mapping class="org.lyh.app.entitys.TestEntity"/>
         <mapping class="org.lyh.app.entitys.PraiseEntity"/>
@@ -35,7 +38,17 @@
         <mapping class="org.lyh.app.entitys.CommentEntity"/>
         <mapping class="org.lyh.app.entitys.ConfigEntity"/>
         <mapping class="org.lyh.app.entitys.CollectEntity"/>
+        <mapping class="org.lyh.app.entitys.CollegeEntity"/>
         <mapping class="org.lyh.app.entitys.TagSelectEntity"/>
+        <mapping class="org.lyh.app.entitys.ArticleEntity"/>
+        <mapping class="org.lyh.app.entitys.AudioEntity"/>
+        <mapping class="org.lyh.app.entitys.ExamEntity"/>
+        <mapping class="org.lyh.app.entitys.VideoEntity"/>
+        <mapping class="org.lyh.app.entitys.VideoQstEntity"/>
+        <mapping class="org.lyh.app.entitys.QstTplItemEntity"/>
+        <mapping class="org.lyh.app.entitys.QstTplEntity"/>
+        <mapping class="org.lyh.app.entitys.AudioQstEntity"/>
+        <mapping class="org.lyh.app.entitys.ExamQstEntity"/>
 
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->

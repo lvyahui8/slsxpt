@@ -15,8 +15,7 @@
             </li>
             <li class="active">所有用户</li>
         </ol>
-        <h3><span class="label label-warning">用户</span></h3>
-        <br />
+
         <div class="row">
             <div class="col-sm-12">
                 <table class="table table-condensed table-bordered table-hover table-striped" id="table-exams">

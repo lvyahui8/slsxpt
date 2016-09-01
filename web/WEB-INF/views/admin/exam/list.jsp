@@ -1,12 +1,11 @@
-${requestScope._this.registStyle("js/zurb-responsive-tables/responsive-tables.css")}
+${action.registStyle("js/zurb-responsive-tables/responsive-tables.css")}
 
-${requestScope._this.registScript("js/zurb-responsive-tables/responsive-tables.js")}
+${action.registScript("js/zurb-responsive-tables/responsive-tables.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>
 <%@ include file="../../layouts/admin/header.jsp" %>
 
-<body class="page-body" data-url="">
 <div class="page-container">
     <%@ include file="../../layouts/admin/menu.jsp" %>
 
@@ -18,9 +17,13 @@ ${requestScope._this.registScript("js/zurb-responsive-tables/responsive-tables.j
             </li>
             <li class="active">所有试题</li>
         </ol>
-        <h3><span class="label label-warning">试题</span></h3>
-        <br/>
-
+        <div class="row">
+            <div class="col-sm-3">
+                <p>
+                    <a class="btn btn-blue" href="${baseUrl}/admin/exam-save.action">新建</a>
+                </p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <table class="table table-condensed table-bordered table-hover table-striped" id="table-exams">
@@ -36,7 +39,7 @@ ${requestScope._this.registScript("js/zurb-responsive-tables/responsive-tables.j
                     </tr>
                     </thead>
                     <tbody>
-                    <s:iterator value="pageData.datas" var="project">
+                    <s:iterator value="pageData.datas" var="exam">
                         <tr class="">
                             <td><s:property value="id"/></td>
                             <td><s:property value="title"/></td>
@@ -63,49 +66,9 @@ ${requestScope._this.registScript("js/zurb-responsive-tables/responsive-tables.j
             </div>
         </div>
 
-        <s:if test="pageData.totalPage > 1">
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="mt15 mb15"> ${pageData.currentPage}/${pageData.totalPage},${pageData.totalItem}</span>
-                </div>
-                <div class="col-sm-9">
-                    <ul class="pagination pull-right">
-                        <s:if test="pageData.currentPage == 1">
-                            <li class='disabled'>
-                                <a href="#"><i class="entypo-left-open-mini"></i></a>
-                            </li>
-                        </s:if>
-                        <s:else>
-                            <li>
-                                <a href="${baseUrl}/admin/exam-list.action?currentPage=${pageData.currentPage-1}"><i
-                                        class="entypo-left-open-mini"></i></a>
-                            </li>
-                        </s:else>
-                        <s:iterator begin="pageData.start" step="1" end="pageData.end" var="i">
-                            <li ${pageData.currentPage == i ? "class='active'" : null}>
-                                <a href="${baseUrl}/admin/exam-list.action?currentPage=${i}">${i}</a>
-                            </li>
-                        </s:iterator>
-                        <s:if test="pageData.currentPage == pageData.totalPage">
-                            <li class='disabled'>
-                                <a href="#"><i class="entypo-right-open-mini"></i></a>
-                            </li>
-                        </s:if>
-                        <s:else>
-                            <li>
-                                <a href="${baseUrl}/admin/exam-list.action?currentPage=${pageData.currentPage+1}"><i
-                                        class="entypo-right-open-mini"></i></a>
-                            </li>
-                        </s:else>
-                    </ul>
-                </div>
-            </div>
-
-        </s:if>
-
+        <%@include file="../../layouts/pagination.jsp"%>
 
         <%@ include file="../../layouts/admin/bottom.jsp" %>
     </div>
 </div>
-</body>
 <%@ include file="../../layouts/admin/footer.jsp" %>

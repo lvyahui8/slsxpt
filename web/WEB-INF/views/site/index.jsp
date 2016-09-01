@@ -1,56 +1,249 @@
 <%--
   Created by IntelliJ IDEA.
   User: lvyahui
-  Date: 15-6-17
-  Time: 下午11:15
+  Date: 15-6-18
+  Time: 上午10:06
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<html>
-<head>
-    <title>${title}</title>
-</head>
-<body>
-<s:if test="#session.loginUser != null">
-    <a href="${baseUrl}/site-logout.action">退出</a>
-</s:if>
-<s:else>
-    <a href="${baseUrl}/site-login.action">登陆</a> <a href="${baseUrl}/site-register.action">注册</a>
-</s:else>
 
-<ul class="dd-list">
-    <s:iterator value="#session.topCategorys" var="topCategory">
-        <li class="dd-item" data-id="${topCategory.id}">
-            <div class="dd-content">
-                <s:property value="#topCategory.name"/>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ include file="../layouts/head.jsp" %>
+<%@ include file="../layouts/header.jsp" %>
+<section class="features-blocks">
+
+    <div class="container">
+
+        <div class="row vspace"><!-- "vspace" class is added to distinct this row -->
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-cog"></i>
+                        标题一
+                    </h3>
+
+                    <p>
+                        内容二
+                    </p>
+                </div>
+
             </div>
-            <s:if test="#topCategory.childrens.size() > 0">
-                <ul class="dd-list">
-                    <s:iterator value="#topCategory.childrens" var="childCategoryl1">
-                        <li class="dd-item" data-id="${childCategoryl1.id}">
-                            <div class="dd-content">
-                                <s:property value="#childCategoryl1.name"/>
-                                <div class="pull-right">${childCategoryl1.cnType}</div>
-                            </div>
-                            <s:if test="#childCategoryl1.childrens.size() > 0">
-                                <ul class="dd-list">
-                                    <s:iterator value="#childCategoryl1.childrens" var="childCategoryl2">
-                                        <li class="dd-item" data-id="${childCategoryl2.id}">
-                                            <div class="dd-content">
-                                                <s:property value="#childCategoryl2.name"/>
-                                            </div>
-                                        </li>
-                                    </s:iterator>
-                                </ul>
-                            </s:if>
-                        </li>
-                    </s:iterator>
-                </ul>
-            </s:if>
-        </li>
-    </s:iterator>
-</ul>
-<s:debug/>
-</body>
-</html>
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-gauge"></i>
+                        标题二
+                    </h3>
+
+                    <p>
+                        内容二
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-lifebuoy"></i>
+                        标题三
+                    </h3>
+
+                    <p>
+                        内容三
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Separator -->
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Portfolio -->
+<section class="portfolio-widget">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-3">
+
+                <div class="portfolio-info">
+                    <h3>
+                        <a href="#">最近视频</a>
+                    </h3>
+
+                    <p>简介</p>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="#" class="image">
+                        <img src="assets/images/portfolio-thumb-1.png" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="#" class="like">
+                            <i class="entypo-heart"></i>
+                        </a>
+
+                        <a href="#" class="name">Neon</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="#">Web Design / Development</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="#" class="image">
+                        <img src="assets/images/portfolio-thumb-1.png" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="#" class="like liked">
+                            <i class="entypo-heart"></i>
+                        </a>
+
+                        <a href="#" class="name">Motorola</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="#">Photography</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="#" class="image">
+                        <img src="assets/images/portfolio-thumb-1.png" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="#" class="like">
+                            <i class="entypo-heart"></i>
+                        </a>
+
+                        <a href="#" class="name">Dribbble</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="#">UI Design</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Separator -->
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- Members -->
+<section class="content-section">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-4">
+
+                <div class="staff-member">
+
+                    <a class="image" href="#">
+                        <img src="assets/images/staff-member-1.jpg" class="img-circle" />
+                    </a>
+
+                    <h4>
+                        <a href="#">路人甲</a>
+                        <small>组长</small>
+                    </h4>
+
+                    <p>寄语</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div class="staff-member">
+
+                    <a class="image" href="#">
+                        <img src="assets/images/staff-member-2.jpg" class="img-circle" />
+                    </a>
+
+                    <h4>
+                        <a href="#">路人乙</a>
+                        <small>成员</small>
+                    </h4>
+
+                    <p>寄语</p>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div class="staff-member">
+
+                    <a class="image" href="#">
+                        <img src="assets/images/staff-member-3.jpg" class="img-circle" />
+                    </a>
+
+                    <h4>
+                        <a href="#">路人丙</a>
+                        <small>组员</small>
+                    </h4>
+
+                    <p>寄语</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<%@ include file="../layouts/footer.jsp" %>
+
+

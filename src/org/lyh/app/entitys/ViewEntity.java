@@ -7,19 +7,19 @@ import java.sql.Timestamp;
  * Created by lvyahui on 15-7-7.
  */
 @Entity
-@Table(name = "view", schema = "", catalog = "phoenixnest")
-public class ViewEntity {
-    private int id;
+@Table(name = "view", schema = "")
+public class ViewEntity extends BaseEntity{
+    private Integer id;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

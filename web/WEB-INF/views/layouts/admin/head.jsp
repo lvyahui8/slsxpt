@@ -1,4 +1,4 @@
-<%@ page import="org.lyh.app.base.BaseAction" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: lvyahui
@@ -12,7 +12,7 @@
 <%--action范围即比request范围多出了一个OgnlContext范围。--%>
 
 <%--<%!--%>
-  <%--private org.lyh.app.base.BaseAction _this = (BaseAction) request.getAttribute("_this");--%>
+  <%--private org.lyh.app.actions.BaseAction _this = (BaseAction) request.getAttribute("_this");--%>
 <%--%>--%>
 <!DOCTYPE html>
 <html>
@@ -44,6 +44,5 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
 </head>
 

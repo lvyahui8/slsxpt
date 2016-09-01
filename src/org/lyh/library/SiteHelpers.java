@@ -1,7 +1,11 @@
 package org.lyh.library;
 
+import com.opensymphony.xwork2.ActionContext;
+import org.apache.struts2.ServletActionContext;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -49,14 +53,6 @@ public class
         return md5(salt + password + salt);
     }
 
-    public static void p(Object obj){
-        System.out.println(obj);
-    }
-
-    public static void pe(Object obj){
-        p(obj);
-        System.exit(0);
-    }
 
     public static String html2text(String html){
         return Jsoup.parse(html).text();
@@ -64,5 +60,36 @@ public class
 
     public static void main(String[] args) {
         System.out.println(html2text("<html><body><div>nihao&nbsp;</div></body></html>"));
+    }
+
+
+    /**
+     * 打印
+     * @param obj
+     */
+    public static void pe(Object obj){
+        pe(obj, false);
+    }
+    public static void pe(Object obj,boolean resp){
+        p(obj,resp);
+        System.exit(0);
+    }
+    public static void p(Object obj,boolean resp){
+        if(resp){
+            PrintWriter writer = null;
+            try {
+                writer = ServletActionContext.getResponse().getWriter();
+                writer.print("<pre>");
+                writer.print(obj);
+                writer.print("</pre>");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println(obj);
+        }
+    }
+    public static void p(Object obj){
+        p(obj, false);
     }
 }

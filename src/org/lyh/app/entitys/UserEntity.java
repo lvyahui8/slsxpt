@@ -1,31 +1,47 @@
 package org.lyh.app.entitys;
 
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.lyh.app.base.BaseEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Map;
 
 /**
  * Created by lvyahui on 2015-06-26.
  */
 @Entity
-@Table(name = "user", schema = "", catalog = "phoenixnest")
+@Table(name = "user", schema = "")
 @DynamicInsert(value = true)
 public class UserEntity extends BaseEntity {
-    private Integer id;
     private String username;
     private String password;
     private String salt;
     private String name;
+
+    @Basic
+    @Column(name = "label")//新建字段后要记得添加set,get方法并对get方法添加上注解
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    @Basic
+    @Column(name = "clazz")
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
+
+    private String clazz;
+    private String label;
     private Integer gold;
     private Integer progress;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+
     private String email;
     private String phone;
     private String code;
@@ -35,17 +51,21 @@ public class UserEntity extends BaseEntity {
     /* 表单附加数据 */
     private String rePassword;
     private String remenberMe;
+    private Integer categoryId;
+    @Transient
+    public Integer getCategoryId() {
+        return categoryId;
+    }
 
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     @Basic
@@ -88,6 +108,7 @@ public class UserEntity extends BaseEntity {
         this.name = name;
     }
 
+
     @Basic
     @Column(name = "gold")
     public Integer getGold() {
@@ -114,19 +135,12 @@ public class UserEntity extends BaseEntity {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Basic
     @Column(name = "updated_at")
     public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
     @Basic
     @Column(name = "email")
@@ -197,6 +211,29 @@ public class UserEntity extends BaseEntity {
         this.remenberMe = remenberMe;
     }
 
+    private CollegeEntity college;//实体的相关联的college表的实体，并提供get和set
+
+    @ManyToOne(targetEntity = CollegeEntity.class)//一个学院对应多个学生
+    @JoinColumn(name = "college_id")//关联的外键字段
+    public CollegeEntity getCollege() {
+        return college;
+    }
+
+    public void setCollege(CollegeEntity college) {
+        this.college = college;
+    }
+
+    private Integer collegeId;
+
+    @Transient
+    public Integer getCollegeId() {
+        return collegeId;
+    }
+
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -263,22 +300,7 @@ public class UserEntity extends BaseEntity {
             '}' + "\n";
     }
 
-    @Override
-    public String[][] rules() {
 
-
-        String [][] rules = {
-            {"username,password","required"},
-            {"username,password","length","6","14"},
-            {"rePassword","equals","password"},
-            {"gold,progress","integer"},
-            {"email","regex","\\w{6,12}"},
-            {"phone","number"},
-            {"createAt","timestamp"}
-        };
-
-        return rules;
-    }
 
 
     public boolean validate() {

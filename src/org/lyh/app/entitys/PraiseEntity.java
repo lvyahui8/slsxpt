@@ -7,20 +7,14 @@ import java.sql.Timestamp;
  * Created by lvyahui on 15-7-7.
  */
 @Entity
-@Table(name = "praise", schema = "", catalog = "phoenixnest")
-public class PraiseEntity {
-    private int id;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+@Table(name = "praise", schema = "")
+public class PraiseEntity extends BaseEntity {
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Basic
@@ -29,39 +23,10 @@ public class PraiseEntity {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Basic
     @Column(name = "updated_at")
     public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PraiseEntity that = (PraiseEntity) o;
-
-        if (id != that.id) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
-        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
-        return result;
-    }
 }

@@ -5,17 +5,18 @@
   Time: 下午3:46
   To change this template use File | Settings | File Templates.
 --%>
-<%--<%--%>
-  <%--_this.registScript("js/neon-register.js");--%>
-  <%--_this.registScript("js/jquery.inputmask.bundle.min.js");--%>
-<%--%>--%>
+
+${action.registScript("js/jquery.validate.min.js")}
+${action.registScript("js/neon-register.js")}
+${action.registScript("js/jquery.inputmask.bundle.min.js")}
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../layouts/admin/head.jsp"%>
-<%@ include file="../layouts/admin/header.jsp"%>
-${requestScope._this.registScript("js/jquery.validate.min.js")}
-${requestScope._this.registScript("js/neon-register.js")}
-${requestScope._this.registScript("js/jquery.inputmask.bundle.min.js")}
 <body  class="page-body login-page login-form-fall" data-url="">
+<script type="text/javascript">
+    var baseurl = '${baseUrl}',
+            $ = $ || jQuery;
+</script>
 <div class="login-container">
 
   <div class="login-header login-caret">
@@ -76,7 +77,7 @@ ${requestScope._this.registScript("js/jquery.inputmask.bundle.min.js")}
                   <i class="entypo-mail"></i>
                 </div>
 
-                <input type="text" class="form-control" name="email" id="email" data-mask="email" placeholder="邮箱" autocomplete="off" />
+                <input type="text" class="form-control" name="email" id="email" data-mask="email" placeholder="邮箱" data-url="${baseUrl}/site-checkEmail.action" autocomplete="off" />
               </div>
             </div>
 
@@ -129,5 +130,4 @@ ${requestScope._this.registScript("js/jquery.inputmask.bundle.min.js")}
   </div>
 
 </div>
-</body>
 <%@ include file="../layouts/admin/footer.jsp"%>

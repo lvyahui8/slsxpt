@@ -11,17 +11,18 @@ public class TClass {
     public static Base<?> instance = null;
     public static void main(String [] args){
         instance = new C();
-        instance.cannotGetTClassName(); // 异常，如何能输出java.lang.Float？
+        instance.getTClassName(); // 异常，如何能输出java.lang.Float？
     }
 }
 
-abstract class ImportantBase<T>{}
+abstract class ImportantBase<T extends Number>{}
 
-abstract class Base<T> extends ImportantBase<T>
+abstract class Base<T extends Number> extends ImportantBase<T>
 {
-    public static <T> void cannotGetTClassName()
+    public static <T> void getTClassName()
     {
         Type t = TClass.instance.getClass().getGenericSuperclass();
+        System.out.println(t);
         Type[] params = ((ParameterizedType) t).getActualTypeArguments();
         Class<T> cls = (Class<T>) params[0];
         System.out.println(cls.getName());

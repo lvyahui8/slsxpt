@@ -12,7 +12,7 @@
         <header class="logo-env">
             <div class="logo">
                 <a href="${baseUrl}/admin/index.action">
-                    <img src="http://dummyimage.com/241x56/a8a6a8/ffffff" width="120"
+                    <img src="${assets}/images/logo@2x.png" width="120"
                          alt=""/>
                 </a>
             </div>
@@ -24,16 +24,13 @@
                 </a>
             </div>
 
-
             <!-- open/close menu icon (为了在手机端使用不要删除) -->
             <div class="sidebar-mobile-menu visible-xs">
                 <a href="#" class="with-animation"><!--增加 class "with-animation" 支持动画 -->
                     <i class="entypo-menu"></i>
                 </a>
             </div>
-
         </header>
-
 
         <ul id="main-menu" class="main-menu">
             <s:if test='#session.loginUser.type == "root"'>
@@ -46,84 +43,34 @@
                 </li>
             </s:if>
             <li class='${actionName=="exam" ?  "active opened" : "" }'>
-                <a href="#">
+                <a href="${baseUrl}/admin/exam-list.action">
                     <i class="entypo-book-open"></i>
                     <span class="title">试题资料管理</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="${baseUrl}/admin/exam-list.action">
-                            <i class="entypo-list"></i>
-                            <span class="title">所有试题</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${baseUrl}/admin/exam-save.action">
-                            <i class="entypo-list-add"></i>
-                            <span class="title">新建试题</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class='${actionName=="video" ?  "active opened" : "" }'>
-                <a href="#">
+                <a href="${baseUrl}/admin/video-list.action">
                     <i class="entypo-video"></i>
                     <span class="title">视频资料管理</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="${baseUrl}/admin/video-list.action">
-                            <i class="entypo-list"></i>
-                            <span class="title">所有视频</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${baseUrl}/admin/video-save.action">
-                            <i class="entypo-list-add"></i>
-                            <span class="title">上传视频</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class='${actionName=="audio" ?  "active opened" : "" }'>
-                <a href="#">
+                <a href="${baseUrl}/admin/audio-list.action">
                     <i class="entypo-music"></i>
                     <span class="title">音频资料管理</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="${baseUrl}/admin/audio-list.action">
-                            <i class="entypo-list"></i>
-                            <span class="title">所有音频</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${baseUrl}/admin/audio-save.action">
-                            <i class="entypo-list-add"></i>
-                            <span class="title">上传音频</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class='${actionName=="article" ?  "active opened" : "" }'>
-                <a href="">
+                <a href="${baseUrl}/admin/article-list.action">
                     <i class="entypo-doc"></i>
                     <span class="title">文章资料管理</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="${baseUrl}/admin/article-list.action">
-                            <i class="entypo-list"></i>
-                            <span class="title">所有文章</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${baseUrl}/admin/article-save.action">
-                            <i class="entypo-list-add"></i>
-                            <span class="title">新建文章</span>
-                        </a>
-                    </li>
-                </ul>
+            </li>
+            <li class='${actionName=="qstTpl" ?  "active opened" : "" }'>
+                <a href="${baseUrl}/admin/qstTpl-list.action">
+                    <i class="entypo-help-circled"></i>
+                    <span class="title">问答模板管理</span>
+                </a>
             </li>
             <s:if test='#session.loginUser.type == "root"'>
             <li class='${actionName=="user" ?  "active opened" : "" }'>

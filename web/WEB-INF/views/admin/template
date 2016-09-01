@@ -1,7 +1,7 @@
 
-${requestScope._this.registStyle("js/rickshaw/rickshaw.min.css")}
+${action.registStyle("js/rickshaw/rickshaw.min.css")}
 
-${requestScope._this.registScript("js/neon-chat.js")}
+${action.registScript("js/neon-chat.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>

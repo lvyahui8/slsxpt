@@ -2,17 +2,18 @@ package org.lyh.app.services;
 
 import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
-import org.lyh.app.base.BaseService;
+import org.lyh.app.daos.QstTplDao;
 import org.lyh.app.entitys.CategoryEntity;
 import org.lyh.app.daos.CategoryDao;
+import org.lyh.app.entitys.QstTplEntity;
+import org.lyh.app.entitys.QstTplItemEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by lvyahui on 2015-06-22.
@@ -21,21 +22,20 @@ import java.util.Map;
 @Service
 @Transactional
 public class CategoryService extends BaseService<CategoryEntity>{
-    private CategoryDao categoryDao;
 
-    public void setCategoryDao(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
+    private QstTplDao qstTplDao ;
+
+    public void setQstTplDao(QstTplDao qstTplDao) {
+        this.qstTplDao = qstTplDao;
     }
 
     public List<CategoryEntity> getTopCategorys() {
-        return categoryDao.getTopCategorys();
+        return ((CategoryDao)baseDao).getTopCategorys();
     }
 
-    public void updateCategorysTree(String categorysJson) {
+    public void updateCategoryTree(String categorysJson) {
         try {
-//            System.out.println(categorysJson);
             Object obj = JSONUtil.deserialize(categorysJson);
-//            System.out.println(obj);
 
             List<Map<String,Object>> categoryTree = (List<Map<String,Object>>)obj;
             updateCategoryTree(categoryTree,null,CategoryEntity.ROOT_LEVEL);
@@ -44,37 +44,57 @@ public class CategoryService extends BaseService<CategoryEntity>{
         }
     }
 
+    /**
+     * 更新菜单树
+     * @param categoryTree 菜单树
+     * @param parentCategory 根节点
+     * @param level 等级
+     */
     private void updateCategoryTree(List<Map<String,Object>> categoryTree,
                                     CategoryEntity parentCategory,Integer level){
         if(categoryTree == null) return;
+
         for (
                 Iterator<Map<String,Object>> it = categoryTree.iterator();
                 it.hasNext();) {
             Map<String,Object> topItem = it.next();
-            CategoryEntity nTopCategory = categoryDao.get(((Long) topItem.get("id")).intValue());
-            System.out.println(nTopCategory);
-            if((nTopCategory.getParent() != null && parentCategory ==null)
+            CategoryEntity nTopCategory = baseDao.get(((Long) topItem.get("id")).intValue());
+
+            /*
+             * // 父节点或者级别发生变化
+             */
+            /*
+            if((nTopCategory.getParent() != null && parentCategory == null)
                     || (nTopCategory.getParent() == null && parentCategory != null)
                     || !(nTopCategory == null && parentCategory == null)
                     || !(nTopCategory.getParent().equals(parentCategory))
                     ){
-                nTopCategory.setParent(parentCategory);
-                nTopCategory.setLevel(level);
-                categoryDao.save(nTopCategory);
+
             }
+            */
+            nTopCategory.setParent(parentCategory);
+            nTopCategory.setLevel(level);
+            baseDao.save(nTopCategory);
             updateCategoryTree((List<Map<String, Object>>) topItem.get("children"),nTopCategory,level+1);
         }
     }
 
-    public void addCategory(CategoryEntity categoryEntity, Integer parent_id) {
-        CategoryEntity parentCategory = categoryDao.get(parent_id);
-        categoryEntity.setParent(parentCategory);
-        categoryEntity.setLevel(parentCategory == null ? CategoryEntity.ROOT_LEVEL : parentCategory.getLevel()+1);
-        categoryDao.update(categoryEntity);
+    @Override
+    public Integer add(CategoryEntity categoryEntity) {
+        if(categoryEntity.getParentId() != null){
+            CategoryEntity parentCategory = baseDao.get(categoryEntity.getParentId());
+            categoryEntity.setParent(parentCategory);
+            categoryEntity.setLevel(parentCategory.getLevel()+1);
+        }
+        else{
+            categoryEntity.setLevel(CategoryEntity.ROOT_LEVEL);
+        }
+        return baseDao.save(categoryEntity);
     }
 
-    public void deleteCategory(CategoryEntity categoryEntity) {
-        categoryEntity = categoryDao.get(categoryEntity.getId());
+    @Override
+    public boolean delete(CategoryEntity categoryEntity) {
+        categoryEntity = baseDao.get(categoryEntity.getId());
 //        System.out.println(categoryEntity);
         //把所有以它作为父栏目的栏目的父栏目为它的父栏目
         if(categoryEntity.getChildrens().size() > 0){
@@ -82,18 +102,40 @@ public class CategoryService extends BaseService<CategoryEntity>{
                  iterator.hasNext();){
                 CategoryEntity children = iterator.next();
                 children.setParent(categoryEntity.getParent());
-                categoryDao.save(children);
+                baseDao.save(children);
             }
         }
-        categoryDao.delete(categoryEntity);
+        baseDao.delete(categoryEntity);
+        return true;
     }
 
-    public void updateCategory(CategoryEntity categoryEntity) {
-        CategoryEntity thatCategory = categoryDao.get(categoryEntity.getId());
-        if(!categoryEntity.equals(thatCategory)){
-            thatCategory.setName(categoryEntity.getName());
-            thatCategory.setType(categoryEntity.getType());
-            categoryDao.save(thatCategory);
+    @Override
+    public void update(CategoryEntity category) {
+        CategoryEntity existCategory = baseDao.get(category.getId());
+        if(!category.equals(existCategory)){
+            existCategory.setName(category.getName());
+            existCategory.setType(category.getType());
+            if(existCategory.getQstTplId() != null
+                    ? !existCategory.getQstTplId().equals(category.getQstTplId()) : category.getQstTplId() != null){
+                existCategory.setTemplate(this.qstTplDao.get(category.getQstTplId()));
+            }
+            baseDao.save(existCategory);
         }
     }
+
+
+    public List<QstTplEntity> allTemplate(){
+        return this.qstTplDao.all();
+    }
+
+    public List<QstTplItemEntity> getTemplate(Integer id){
+        QstTplEntity template = this.qstTplDao.get(id);
+        System.out.println(template);
+        if(template != null){
+            return template.getItems();
+        }
+        return null;
+    }
+
+
 }

@@ -1,20 +1,18 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--${requestScope._this.registStyle("js/select2/select2-bootstrap.css")}--%>
-<%--${requestScope._this.registStyle("js/select2/select2.css")}--%>
-${requestScope._this.registStyle("js/selectboxit/jquery.selectBoxIt.css")}
+<%--${action.registStyle("js/select2/select2-bootstrap.css")}--%>
+<%--${action.registStyle("js/select2/select2.css")}--%>
+${action.registStyle("js/selectboxit/jquery.selectBoxIt.css")}
 
-${requestScope._this.registScript("js/jquery.validate.min.js")}
+${action.registScript("js/jquery.validate.min.js")}
 
-${requestScope._this.registScript("js/jquery.nestable.js")}
-${requestScope._this.registScript("js/selectboxit/jquery.selectBoxIt.min.js")}
-${requestScope._this.registScript("js/category.js")}
+${action.registScript("js/jquery.nestable.js")}
+${action.registScript("js/selectboxit/jquery.selectBoxIt.min.js")}
+${action.registScript("js/category.js")}
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>
 <%@ include file="../../layouts/admin/header.jsp" %>
 
-<body class="page-body" data-url="">
 <div class="page-container">
     <%@ include file="../../layouts/admin/menu.jsp"%>
 
@@ -111,7 +109,7 @@ ${requestScope._this.registScript("js/category.js")}
                     </div>
 
                     <div class="panel-body">
-                        <form id="add-category-form" role="form" class="form-horizontal validate" action="${baseUrl}/admin/category-postAdd.action" method="post">
+                        <form id="add-category-form" role="form" class="form-horizontal validate" action="${baseUrl}/admin/category-postSave.action" method="post">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">父栏目</label>
                                 <div class="col-sm-5">
@@ -148,6 +146,17 @@ ${requestScope._this.registScript("js/category.js")}
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">问答模板</label>
+                                <div class="col-sm-5" >
+                                    <select name="qstTplId" class="selectboxit">
+                                        <option value="">无</option>
+                                        <s:iterator value="allTemplate" var="tpl">
+                                            <option value="${tpl.id}">${tpl.name}</option>
+                                        </s:iterator>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-5">
                                     <button type="submit" class="btn btn-blue btn-block">新增</button>
@@ -155,7 +164,6 @@ ${requestScope._this.registScript("js/category.js")}
                             </div>
                         </form>
                     </div>
-
                 </div>
                 <div class="panel panel-primary" data-collapsed="0">
 
@@ -170,7 +178,7 @@ ${requestScope._this.registScript("js/category.js")}
                     </div>
 
                     <div class="panel-body">
-                        <form id="update-category-form" method="post" role="form" class="form-horizontal validate" action="${baseUrl}/admin/category-postUpdate.action" data-delete="${baseUrl}/admin/category-postDelete.action">
+                        <form id="update-category-form" method="post" role="form" class="form-horizontal validate" action="${baseUrl}/admin/category-postSave.action" data-delete="${baseUrl}/admin/category-postDelete.action">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">栏目</label>
                                 <div class="col-sm-5">
@@ -178,15 +186,21 @@ ${requestScope._this.registScript("js/category.js")}
                                         <option value="">选择栏目</option>
                                         <s:iterator value="#session.topCategorys" var="topCategory">
                                             <option value="${topCategory.id}"
-                                                    data-type="${topCategory.type}">${topCategory.name}</option>
+                                                    data-type="${topCategory.type}"
+                                                    data-qstTplId="${topCategory.qstTplId}"
+                                                    >${topCategory.name}</option>
                                             <s:if test="#topCategory.childrens.size() > 0">
                                                 <s:iterator value="#topCategory.childrens" var="childCategoryl1">
                                                     <option value="${childCategoryl1.id}"
-                                                            data-type="${childCategoryl1.type}">--${childCategoryl1.name}</option>
+                                                            data-type="${childCategoryl1.type}"
+                                                            data-qstTplId="${childCategoryl1.qstTplId}"
+                                                            >--${childCategoryl1.name}</option>
                                                     <s:if test="#childCategoryl1.childrens.size() > 0">
                                                         <s:iterator value="#childCategoryl1.childrens" var="childCategoryl2">
                                                             <option value="${childCategoryl2.id}"
-                                                                    data-type="${childCategoryl2.type}">----${childCategoryl2.name}</option>
+                                                                    data-type="${childCategoryl2.type}"
+                                                                    data-qstTplId="${childCategoryl2.qstTplId}"
+                                                                    >----${childCategoryl2.name}</option>
                                                         </s:iterator>
                                                     </s:if>
                                                 </s:iterator>
@@ -215,6 +229,17 @@ ${requestScope._this.registScript("js/category.js")}
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">问答模板</label>
+                                <div class="col-sm-5" >
+                                    <select name="qstTplId" id="qstTplId" class="selectboxit">
+                                        <option value="">无</option>
+                                        <s:iterator value="allTemplate" var="tpl">
+                                            <option value="${tpl.id}">${tpl.name}</option>
+                                        </s:iterator>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-5">
                                     <div class="col-sm-6">
@@ -227,18 +252,11 @@ ${requestScope._this.registScript("js/category.js")}
                             </div>
                         </form>
                     </div>
-
                 </div>
-
             </div>
-
-
         </div>
         <%@ include file="../../layouts/admin/bottom.jsp"%>
     </div>
-
-
 </div>
 
-</body>
 <%@ include file="../../layouts/admin/footer.jsp" %>

@@ -7,9 +7,8 @@ import java.sql.Timestamp;
  * Created by lvyahui on 15-7-7.
  */
 @Entity
-@Table(name = "comment", schema = "", catalog = "phoenixnest")
-public class CommentEntity {
-    private int id;
+@Table(name = "comment", schema = "")
+public class CommentEntity extends BaseEntity{
     private String content;
     private String desc;
     private String pub;
@@ -18,13 +17,11 @@ public class CommentEntity {
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "content")

@@ -1,6 +1,6 @@
 package org.lyh.library;
 
-import org.lyh.app.base.BaseEntity;
+import org.lyh.app.entitys.BaseEntity;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

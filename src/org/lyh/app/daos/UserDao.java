@@ -1,6 +1,5 @@
 package org.lyh.app.daos;
 
-import org.lyh.app.base.BaseDao;
 import org.lyh.app.entitys.UserEntity;
 
 /**

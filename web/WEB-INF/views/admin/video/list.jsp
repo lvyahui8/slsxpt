@@ -3,7 +3,6 @@
 <%@ include file="../../layouts/admin/head.jsp" %>
 <%@ include file="../../layouts/admin/header.jsp" %>
 
-<body class="page-body" data-url="">
 <div class="page-container">
     <%@ include file="../../layouts/admin/menu.jsp"%>
 
@@ -15,8 +14,11 @@
             </li>
             <li class="active">所有视频</li>
         </ol>
-        <h3><span class="label label-warning">视频</span></h3>
-        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <p><a href="${baseUrl}/admin/video-save.action" class="btn btn-blue">新建</a></p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <table class="table table-condensed table-bordered table-hover table-striped" id="table-exams">
@@ -33,7 +35,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <s:iterator value="pageData.datas" var="project">
+                    <s:iterator value="pageData.datas" var="videol">
                         <tr class="">
                             <td><s:property value="id"/> </td>
                             <td><img src="${thumbnail}" alt="${title}" width="40" height="30"/></td>
@@ -58,49 +60,9 @@
                 </table>
             </div>
         </div>
-
-        <s:if test="pageData.totalPage > 1">
-            <div class="row">
-                <div class="col-sm-3">
-                    <span class="mt15 mb15"> ${pageData.currentPage}/${pageData.totalPage},${pageData.totalItem}</span>
-                </div>
-                <div class="col-sm-9">
-                    <ul class="pagination pull-right">
-                        <s:if test="pageData.currentPage == 1">
-                            <li class='disabled'>
-                                <a href="#"><i class="entypo-left-open-mini"></i></a>
-                            </li>
-                        </s:if>
-                        <s:else>
-                            <li>
-                                <a href="${baseUrl}/admin/video-list.action?currentPage=${pageData.currentPage-1}"><i class="entypo-left-open-mini"></i></a>
-                            </li>
-                        </s:else>
-                        <s:iterator begin="pageData.start" step="1" end="pageData.end" var="i">
-                            <li ${pageData.currentPage == i ? "class='active'" : null}>
-                                <a href="${baseUrl}/admin/video-list.action?currentPage=${i}">${i}</a>
-                            </li>
-                        </s:iterator>
-                        <s:if test="pageData.currentPage == pageData.totalPage">
-                            <li class='disabled'>
-                                <a href="#"><i class="entypo-right-open-mini"></i></a>
-                            </li>
-                        </s:if>
-                        <s:else>
-                            <li>
-                                <a href="${baseUrl}/admin/video-list.action?currentPage=${pageData.currentPage+1}"><i class="entypo-right-open-mini"></i></a>
-                            </li>
-                        </s:else>
-                    </ul>
-                </div>
-            </div>
-
-        </s:if>
-
+        <%@include file="../../layouts/pagination.jsp"%>
         <%@ include file="../../layouts/admin/bottom.jsp"%>
     </div>
-
-
 </div>
-</body>
 <%@ include file="../../layouts/admin/footer.jsp" %>
+

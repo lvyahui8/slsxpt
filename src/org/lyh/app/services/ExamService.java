@@ -2,8 +2,9 @@ package org.lyh.app.services;
 
 import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
-import org.lyh.app.entitys.CategoryEntity;
-import org.lyh.app.entitys.ProjectEntity;
+import org.lyh.app.daos.ExamQstDao;
+import org.lyh.app.entitys.*;
+import org.lyh.library.SiteHelpers;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,39 +16,85 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class ExamService extends ProjectService {
+public class ExamService extends ProjectService<ExamEntity> {
+
+    private ExamQstDao examQstDao ;
+
+    public void setExamQstDao(ExamQstDao examQstDao) {
+        this.examQstDao = examQstDao;
+    }
 
     @Override
-    public void add(ProjectEntity examItem) {
-        examItem.setType("exam");
-        System.out.println(examItem);
-        CategoryEntity category = categoryDao.get(examItem.getCategory_id());
-        System.out.println(category);
+    public Integer add(ExamEntity exam) {
+        CategoryEntity category = categoryDao.get(exam.getCategoryId());
         if(category != null){
-            examItem.setCategory(category);
+            exam.setCategory(category);
         }
-        projectDao.save(examItem);
+        if("qa".equals(exam.getTestType())){
+            for(ExamQstEntity examQstEntity : exam.getQuestions()){
+                examQstEntity.setExam(exam);
+            }
+        }
+        else{
+            exam.getQuestions().clear();
+            try {
+                exam.setAnswer(JSONUtil.serialize(exam.getAnswers()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        UserEntity loginUser = getLoginUser();
+        exam.setUser(loginUser);
+        return baseDao.save(exam);
     }
 
     @Override
-    public void update(ProjectEntity examItem) {
-        ProjectEntity existExamItem =  this.projectDao.get(examItem.getId());
-        existExamItem.setTitle(examItem.getTitle());
-        existExamItem.setAnswer(examItem.getAnswer());
-        existExamItem.setContent(examItem.getContent());
-        if(examItem.getCategory_id() != null  && existExamItem.getCategory().getId() != examItem.getCategory_id()){
-            CategoryEntity categoryEntity = categoryDao.get(examItem.getCategory_id());
-            existExamItem.setCategory(categoryEntity);
+    public void update(ExamEntity exam) {
+        ExamEntity existExam =  this.baseDao.get(exam.getId());
+        existExam.setTitle(exam.getTitle());
+        existExam.setAnswer(exam.getAnswer());
+        existExam.setContent(exam.getContent());
+        if(exam.getCategoryId() != null  && !existExam.getCategory().getId().equals(exam.getCategoryId())){
+            System.out.println("修改了试题分类");
+            CategoryEntity newCategory = categoryDao.get(exam.getCategoryId());
+            existExam.setCategory(newCategory);
         }
-        projectDao.save(existExamItem);
+        if("qa".equals(exam.getTestType())){
+            this.examQstDao.delete("exam_id",exam.getId());
+            for (ExamQstEntity examQstEntity : exam.getQuestions()){
+                existExam.getQuestions().add(examQstEntity);
+                examQstEntity.setExam(existExam);
+            }
+        }else{
+            try {
+                existExam.setAnswer(JSONUtil.serialize(exam.getAnswers()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        existExam.setTestType(exam.getTestType());
+        baseDao.save(existExam);
     }
 
-    public List<Map<String, Object>> transAnswers(String answer) {
-        try {
-            return (List<Map<String, Object>>) JSONUtil.deserialize(answer);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    @Override
+    public boolean delete(ExamEntity entity) {
+        this.examQstDao.delete("exam_id",entity.getId());
+        this.baseDao.delete(entity);
+        return true;
+    }
+
+    @Override
+    public void handleEntity(ExamEntity existEntity) {
+        super.handleEntity(existEntity);
+        if(!existEntity.getTestType().equals("qa")){
+            try {
+                Map<String,Object> data = (Map<String, Object>) JSONUtil.deserialize(existEntity.getAnswer());
+                existEntity.getAnswers().getRight().addAll((List<Long>)data.get("right"));
+                existEntity.getAnswers().getItems().addAll((List<String>)data.get("items"));
+                SiteHelpers.p("handleEntity:"+existEntity);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
     }
 }

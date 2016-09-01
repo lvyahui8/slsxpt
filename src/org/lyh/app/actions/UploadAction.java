@@ -2,20 +2,19 @@ package org.lyh.app.actions;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
-import org.lyh.app.base.BaseAction;
+import org.lyh.app.entitys.UserEntity;
 import org.lyh.library.SiteHelpers;
 import org.lyh.library.VideoUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by admin on 2015/7/2.
  */
-public class UploadAction extends BaseAction{
+public class UploadAction extends BaseAction<UserEntity>{
     private String saveBasePath;
     private String imagePath;
     private String videoPath;
@@ -23,7 +22,6 @@ public class UploadAction extends BaseAction{
     private String thumbnailPath;
 
     private File image;
-
     public void setImage(File image) {
         this.image = image;
     }
@@ -42,40 +40,20 @@ public class UploadAction extends BaseAction{
     private String fileFileName;
     private String fileContentType;
 
-    public String getThumbnailPath() {
-        return thumbnailPath;
-    }
-
     public void setThumbnailPath(String thumbnailPath) {
         this.thumbnailPath = thumbnailPath;
-    }
-
-    public String getSaveBasePath() {
-        return saveBasePath;
     }
 
     public void setSaveBasePath(String saveBasePath) {
         this.saveBasePath = saveBasePath;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    public String getVideoPath() {
-        return videoPath;
-    }
-
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
-    }
-
-    public String getAudioPath() {
-        return audioPath;
     }
 
     public void setAudioPath(String audioPath) {
@@ -119,7 +97,8 @@ public class UploadAction extends BaseAction{
     }
 
     public String image(){
-        Map<String,Object> dataJson = new HashMap<String,Object>();
+        SiteHelpers.p("上传图片:"+pictureFileName);
+        Map<String,Object> dataJson = new HashMap<>();
         if(picture != null){
             String fileExtend = pictureFileName.substring(pictureFileName.lastIndexOf("."));
             String newFileName
@@ -142,7 +121,7 @@ public class UploadAction extends BaseAction{
             }
             dataJson.put("image_url",
                     ServletActionContext
-                            .getServletContext().getContextPath()+"/"+saveBasePath+imagePath+"/"+newFileName);
+                            .getServletContext().getContextPath()+saveBasePath+imagePath+"/"+newFileName);
             dataJson.put("success",true);
         }
         else{
@@ -177,6 +156,7 @@ public class UploadAction extends BaseAction{
             thumbnailFile
                     = app.getRealPath(saveBasePath + thumbnailPath) + "/" + thumbnailName;
         }
+
         String realPath = app.getRealPath(saveBasePath + typeDir);
         File saveFile = new File(realPath, newFileName + fileExtend);
         // 存在同名文件，跳过
@@ -200,10 +180,10 @@ public class UploadAction extends BaseAction{
         }
         if((Boolean)dataJson.get("success")){
             dataJson.put("link",
-                    app.getContextPath() + "/" + saveBasePath + typeDir + "/" + newFileName + fileExtend);
+                    app.getContextPath() +  saveBasePath + typeDir + "/" + newFileName + fileExtend);
             if(needThumb){
                 dataJson.put("thumbnail",
-                        app.getContextPath() + "/" + saveBasePath + thumbnailPath + "/" + thumbnailName);
+                        app.getContextPath() + saveBasePath + thumbnailPath + "/" + thumbnailName);
             }
         }
         this.responceJson(dataJson);
@@ -254,10 +234,10 @@ public class UploadAction extends BaseAction{
         }
         if((Boolean)dataJson.get("success")){
             dataJson.put("link",
-                    app.getContextPath() + "/" + saveBasePath + typeDir + "/" + newFileName + fileExtend);
+                    app.getContextPath() +saveBasePath + typeDir + "/" + newFileName + fileExtend);
             if(needThumb){
                 dataJson.put("thumbnail",
-                        app.getContextPath() + "/" + saveBasePath + thumbnailPath + "/" + thumbnailName);
+                        app.getContextPath() + saveBasePath + thumbnailPath + "/" + thumbnailName);
             }
         }
         this.responceJson(dataJson);

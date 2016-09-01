@@ -1,122 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- 数据库配置开始 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/phoenixnest"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/slsxpt?zeroDateTimeBehavior=convertToNull"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
     </bean>
-
     <bean id="sessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>org.lyh.app.entitys.AudioQstEntity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/slsxpt</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
     </bean>
-
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
     <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 数据库配置结束-->
 
     <!-- Action -->
-    <!-- 公共Action -->
-    <bean id="baseAction" class="org.lyh.app.base.BaseAction" scope="prototype">
-
+    <!-- 公共Action 开始-->
+    <bean id="baseAction" class="org.lyh.app.actions.BaseAction" scope="prototype">
+    </bean>
+    <bean id="projectAction"
+          class="org.lyh.app.actions.ProjectAction" scope="prototype" parent="baseAction">
+        <property name="categoryService" ref="categoryService"/>
     </bean>
     <bean id="uploadAction" class="org.lyh.app.actions.UploadAction" scope="prototype" parent="baseAction">
     </bean>
+    <!-- 公共Action结束-->
+
+    <!-- 前台Action 开始-->
     <bean id="siteAction" class="org.lyh.app.actions.SiteAction" scope="prototype" parent="baseAction">
         <property name="categoryService" ref="categoryService"/>
         <property name="userService" ref="userService"/>
-    </bean>
-    <bean id="userAction" class="org.lyh.app.actions.UserAction" scope="prototype" parent="baseAction">
-        <property name="userService" ref="userService"/>
-    </bean>
-    <bean id="examAction" class="org.lyh.app.actions.ExamAction" scope="prototype"  parent="admin_projectAction">
-        <property name="examService" ref="examService"/>
-    </bean>
-    <bean id="videoAction" class="org.lyh.app.actions.VideoAction" scope="prototype"  parent="admin_projectAction">
-        <property name="videoService" ref="videoService"/>
-    </bean>
-    <bean id="articleAction" class="org.lyh.app.actions.ArticleAction" scope="prototype"  parent="admin_projectAction">
         <property name="articleService" ref="articleService"/>
     </bean>
-    <bean id="audioAction" class="org.lyh.app.actions.AudioAction" scope="prototype" parent="admin_projectAction">
-        <property name="audioService" ref="audioService"/>
+    <bean id="userAction" class="org.lyh.app.actions.UserAction" scope="prototype" parent="baseAction">
+        <property name="baseService" ref="userService"/>
     </bean>
-    <!-- ============= 后台action ============= -->
+    <bean id="examAction" class="org.lyh.app.actions.ExamAction" scope="prototype"  parent="projectAction">
+        <property name="baseService" ref="examService"/>
+    </bean>
+    <bean id="videoAction" class="org.lyh.app.actions.VideoAction" scope="prototype"  parent="projectAction">
+        <property name="baseService" ref="videoService"/>
+    </bean>
+    <bean id="articleAction" class="org.lyh.app.actions.ArticleAction" scope="prototype"  parent="projectAction">
+        <property name="baseService" ref="articleService"/>
+    </bean>
+    <bean id="audioAction" class="org.lyh.app.actions.AudioAction" scope="prototype" parent="projectAction">
+        <property name="baseService" ref="audioService"/>
+    </bean>
+    <!-- 前台Action 结束-->
+
+    <!-- 后台action 开始-->
     <bean id="admin_indexAction" class="org.lyh.app.actions.admin.IndexAction" scope="prototype" parent="baseAction">
+        <property name="categoryService" ref="categoryService"/>
+    </bean>
+    <bean id="admin_userAction" class="org.lyh.app.actions.admin.UserAction" scope="prototype" parent="baseAction">
+        <property name="baseService" ref="userService"/>
     </bean>
     <bean id="admin_categoryAction"
           class="org.lyh.app.actions.admin.CategoryAction" scope="prototype" parent="baseAction">
-        <property name="categoryService" ref="categoryService"/>
+        <property name="baseService" ref="categoryService"/>
     </bean>
-    <bean id="admin_projectAction"
-          class="org.lyh.app.actions.admin.ProjectAction" scope="prototype" parent="baseAction">
-        <property name="projectService" ref="projectService"/>
+    <bean id="admin_examAction" class="org.lyh.app.actions.admin.ExamAction" scope="prototype" parent="projectAction">
+        <property name="baseService" ref="examService"/>
     </bean>
-    <bean id="admin_examAction" class="org.lyh.app.actions.admin.ExamAction" scope="prototype"  parent="admin_projectAction">
-        <property name="projectService" ref="examService"/>
+    <bean id="admin_videoAction" class="org.lyh.app.actions.admin.VideoAction" scope="prototype" parent="projectAction">
+        <property name="baseService" ref="videoService"/>
     </bean>
-    <bean id="admin_videoAction" class="org.lyh.app.actions.admin.VideoAction" scope="prototype" parent="admin_projectAction">
-        <property name="projectService" ref="videoService"/>
+    <bean id="admin_articleAction" class="org.lyh.app.actions.admin.ArticleAction" scope="prototype" parent="projectAction">
+        <property name="baseService" ref="articleService"/>
     </bean>
-    <bean id="admin_articleAction" class="org.lyh.app.actions.admin.ArticleAction" scope="prototype" parent="admin_projectAction">
-        <property name="projectService" ref="articleService"/>
+    <bean id="admin_audioAction" class="org.lyh.app.actions.admin.AudioAction" scope="prototype" parent="projectAction">
+        <property name="baseService" ref="audioService"/>
     </bean>
-    <bean id="admin_audioAction" class="org.lyh.app.actions.admin.AudioAction" scope="prototype" parent="admin_projectAction">
-        <property name="projectService" ref="audioService"/>
+    <bean id="admin_qstTplAction" class="org.lyh.app.actions.admin.QstTplAction" scope="prototype" parent="baseAction">
+        <property name="baseService" ref="qstTplService"/>
     </bean>
-    <bean id="admin_userAction" class="org.lyh.app.actions.admin.UserAction" scope="prototype" parent="baseAction">
-        <property name="userService" ref="userService"/>
-    </bean>
+    <!-- 后台Action结束-->
     <!-- Action 结束-->
-    <!-- Service -->
-    <bean id="baseService" class="org.lyh.app.base.BaseService" scope="prototype">
+
+    <!-- Service 开始 -->
+    <bean id="baseService" class="org.lyh.app.services.BaseService" scope="prototype">
     </bean>
-    <bean id="categoryService" class="org.lyh.app.services.CategoryService" scope="prototype">
-        <property name="categoryDao" ref="categoryDao"/>
+    <bean id="categoryService" class="org.lyh.app.services.CategoryService" scope="prototype" parent="baseService">
+        <property name="baseDao" ref="categoryDao"/>
+        <property name="qstTplDao" ref="qstTplDao"/>
     </bean>
-    <bean id="userService" class="org.lyh.app.services.UserService" scope="prototype">
-        <property name="userDao" ref="userDao"/>
+    <bean id="userService" class="org.lyh.app.services.UserService" scope="prototype" parent="baseService">
+        <property name="baseDao" ref="userDao"/>
         <property name="mailSender" ref="mailSender"/>
+        <property name="collegeDao" ref="collegeDao"/>
     </bean>
-    <bean id="projectService" class="org.lyh.app.services.ProjectService" scope="prototype">
-        <property name="projectDao" ref="projectDao"/>
+    <bean id="projectService" class="org.lyh.app.services.ProjectService" scope="prototype" parent="baseService">
         <property name="categoryDao" ref="categoryDao"/>
     </bean>
     <bean id="examService" class="org.lyh.app.services.ExamService" scope="prototype" parent="projectService">
+        <property name="baseDao" ref="examDao"/>
+        <property name="examQstDao" ref="examQstDao"/>
     </bean>
     <bean id="videoService" class="org.lyh.app.services.VideoService" scope="prototype" parent="projectService">
+        <property name="baseDao" ref="videoDao"/>
+        <property name="videoQstDao" ref="videoQstDao"/>
     </bean>
     <bean id="articleService" class="org.lyh.app.services.ArticleService" scope="prototype" parent="projectService">
+        <property name="baseDao" ref="articleDao"/>
     </bean>
     <bean id="audioService" class="org.lyh.app.services.AudioService" scope="prototype" parent="projectService">
+        <property name="baseDao" ref="audioDao"/>
+        <property name="audioQstDao" ref="audioQstDao"/>
     </bean>
-    <!-- DAO -->
-    <bean id="baseDao" class="org.lyh.app.base.BaseDao" scope="prototype">
+    <bean id="qstTplService" class="org.lyh.app.services.QstTplService" scope="prototype" parent="baseService">
+        <property name="baseDao" ref="qstTplDao"/>
+        <property name="qstTplItemDao" ref="qstTplItemDao"/>
     </bean>
-    <bean id="categoryDao" class="org.lyh.app.daos.CategoryDao" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="userDao" class="org.lyh.app.daos.UserDao" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="projectDao" class="org.lyh.app.daos.ProjectDao" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    <!-- Service 结束-->
 
-    <!-- Utils -->
+    <!-- DAO 开始 -->
+    <bean id="baseDao" class="org.lyh.app.daos.BaseDao" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="categoryDao" class="org.lyh.app.daos.CategoryDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="userDao" class="org.lyh.app.daos.UserDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="projectDao" class="org.lyh.app.daos.ProjectDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="examDao" class="org.lyh.app.daos.ExamDao" scope="prototype" parent="projectDao">
+    </bean>
+    <bean id="examQstDao" class="org.lyh.app.daos.ExamQstDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="articleDao" class="org.lyh.app.daos.ArticleDao" scope="prototype" parent="projectDao">
+    </bean>
+    <bean id="videoDao" class="org.lyh.app.daos.VideoDao" scope="prototype" parent="projectDao">
+    </bean>
+    <bean id="videoQstDao" class="org.lyh.app.daos.VideoQstDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="audioDao" class="org.lyh.app.daos.AudioDao" scope="prototype" parent="projectDao">
+    </bean>
+    <bean id="audioQstDao" class="org.lyh.app.daos.AudioQstDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="qstTplDao" class="org.lyh.app.daos.QstTplDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="qstTplItemDao" class="org.lyh.app.daos.QstTplItemDao" scope="prototype" parent="baseDao">
+    </bean>
+    <bean id="collegeDao" class="org.lyh.app.daos.CollegeDao" scope="prototype" parent="baseDao">
+    </bean>
+    <!-- DAO结束 -->
+
+    <!-- 工具bean开始 -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.163.com"/>
         <property name="username" value="devlyh@163.com"/>
@@ -126,6 +177,6 @@
                 <prop key="mail.smtp.auth">true</prop>
             </props>
         </property>
-
     </bean>
+    <!-- 工具bean结束-->
 </beans>

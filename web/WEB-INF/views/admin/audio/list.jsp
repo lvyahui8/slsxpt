@@ -1,13 +1,12 @@
 
-${requestScope._this.registStyle("js/rickshaw/rickshaw.min.css")}
+${action.registStyle("js/rickshaw/rickshaw.min.css")}
 
-${requestScope._this.registScript("js/neon-chat.js")}
+${action.registScript("js/neon-chat.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>
 <%@ include file="../../layouts/admin/header.jsp" %>
 
-<body class="page-body" data-url="">
 <div class="page-container">
     <%@ include file="../../layouts/admin/menu.jsp"%>
 
@@ -19,8 +18,11 @@ ${requestScope._this.registScript("js/neon-chat.js")}
             </li>
             <li class="active">所有音频</li>
         </ol>
-        <h3><span class="label label-warning">音频</span></h3>
-        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <p><a href="${baseUrl}/admin/audio-save.action" class="btn btn-blue">新建</a></p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <table class="table table-condensed table-bordered table-hover table-striped" id="table-exams">
@@ -36,7 +38,7 @@ ${requestScope._this.registScript("js/neon-chat.js")}
                     </tr>
                     </thead>
                     <tbody>
-                    <s:iterator value="pageData.datas" var="project">
+                    <s:iterator value="pageData.datas" var="audio">
                         <tr class="">
                             <td><s:property value="id"/> </td>
                             <td><s:property value="title"/> </td>
@@ -103,5 +105,4 @@ ${requestScope._this.registScript("js/neon-chat.js")}
 
 
 </div>
-</body>
 <%@ include file="../../layouts/admin/footer.jsp" %>

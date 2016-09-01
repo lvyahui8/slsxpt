@@ -1,8 +1,8 @@
 
-${requestScope._this.registStyle("js/selectboxit/jquery.selectBoxIt.css")}
-${requestScope._this.registScript("js/selectboxit/jquery.selectBoxIt.min.js")}
-${requestScope._this.registScript("js/fileinput.js")}
-${requestScope._this.registScript("js/jquery.validate.min.js")}
+${action.registStyle("js/selectboxit/jquery.selectBoxIt.css")}
+${action.registScript("js/selectboxit/jquery.selectBoxIt.min.js")}
+${action.registScript("js/fileinput.js")}
+${action.registScript("js/jquery.validate.min.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>

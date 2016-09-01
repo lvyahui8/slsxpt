@@ -9,21 +9,23 @@
   <%--_this.registScript("js/neon-login.js");--%>
   <%--_this.registScript("js/");--%>
 <%--%>--%>
-${requestScope._this.registScript("js/jquery.validate.min.js")}
-${requestScope._this.registScript("js/neon-login.js")}
+${action.registScript("js/jquery.validate.min.js")}
+${action.registScript("js/neon-login.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../layouts/admin/head.jsp"%>
-<%@ include file="../layouts/admin/header.jsp"%>
 <body  class="page-body login-page login-form-fall" data-url="">
+<script type="text/javascript">
+    var baseurl = '${baseUrl}',
+            $ = $ || jQuery;
+</script>
 <div class="login-container">
-
   <div class="login-header login-caret">
 
     <div class="login-content">
 
       <a href="${baseUrl}/site-index.action" class="logo">
-        <img src="http://dummyimage.com/241x56/a8a6a8/ffffff&text=LOGO" width="120" alt="" />
+        <img src="assets/images/logo@2x.png" width="120" alt="" />
       </a>
 
       <p class="description">欢迎登录</p>
@@ -108,7 +110,7 @@ ${requestScope._this.registScript("js/neon-login.js")}
 
         <br />
 
-        <a href="#">Author</a>  - <a href="#">lvyahui</a>
+        <a href="#"></a> &nbsp;Author - <a href="#">lvyahui</a>
 
       </div>
 
@@ -117,7 +119,6 @@ ${requestScope._this.registScript("js/neon-login.js")}
   </div>
 
 </div>
-</body>
 
 <%@ include file="../layouts/admin/footer.jsp"%>
 

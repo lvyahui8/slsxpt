@@ -1,35 +1,18 @@
 package org.lyh.app.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
-import org.lyh.app.base.BaseAction;
 import org.lyh.app.entitys.UserEntity;
 import org.lyh.app.services.UserService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by lvyahui on 2015-06-28.
  */
-public class UserAction extends BaseAction implements ModelDriven<UserEntity>{
-
-    private UserEntity userEntity = new UserEntity();
-
-    private UserService userService;
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Override
-    public UserEntity getModel() {
-        return this.userEntity;
-    }
+public class UserAction extends BaseAction<UserEntity>{
 
     public String activation(){
-
+        UserEntity userEntity = entity;
         if(userEntity.getCode()!=null && !"".equals(userEntity.getCode().trim())){
-            boolean ok = userService.activationUser(userEntity);
+            boolean ok = ((UserService) baseService).activationUser(userEntity);
             if(ok){
                 return "r-site-login";
             }else{
@@ -41,5 +24,20 @@ public class UserAction extends BaseAction implements ModelDriven<UserEntity>{
     }
 
 
+    public String profile(){
+        return SUCCESS;
+    }
+
+    public String info(){
+        bindData("colleges",((UserService)baseService).allColleges());
+        return SUCCESS;
+    }
+
+    public String postInfo(){
+
+        ((UserService)baseService).updateInfo(entity);
+
+        return "r-user-profile";
+    }
 
 }

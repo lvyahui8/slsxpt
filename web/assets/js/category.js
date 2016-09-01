@@ -30,10 +30,13 @@
             var $this = $(this),
                 $selected = $this.find('option:selected'),
                 $typeSelector = $updateForm.find('select[name="type"]'),
-                type = $selected.get(0).dataset.type;
+                $tplSelector = $updateForm.find('select[name="qstTplId"]'),
+                type = $selected.get(0).dataset.type,
+                tpl = $selected.get(0).dataset.qsttplid;
             $updateForm.find('input[name="name"]')
                 .val($selected.text().substr($selected.text().lastIndexOf("-")+1));
             $typeSelector.find('option[value="'+type+'"]').attr("selected",true).trigger('change');
+            $tplSelector.find('option[value="'+tpl+'"]').attr('selected',true).trigger('change');
         });
 
     });

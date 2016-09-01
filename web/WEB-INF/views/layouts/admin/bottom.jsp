@@ -9,6 +9,6 @@
 <!-- Footer -->
 <footer class="main">
 
-  &copy; 2015 <strong>心理学学习平台</strong> 作者 <a href="http://laborator.co" target="_blank">lvyahui</a>
+  &copy; 2015 <strong>心理学学习平台</strong> 作者 <a href="http://laborator.co" target="_blank">SLSXPT</a>
 
 </footer>

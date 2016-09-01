@@ -5,24 +5,22 @@
   Time: 上午10:06
   To change this template use File | Settings | File Templates.
 --%>
-<%--${requestScope._this.registStyle("js/jvectormap/jquery-jvectormap-1.2.2.css")}--%>
-<%--${requestScope._this.registStyle("js/rickshaw/rickshaw.min.css")}--%>
+<%--${action.registStyle("js/jvectormap/jquery-jvectormap-1.2.2.css")}--%>
+<%--${action.registStyle("js/rickshaw/rickshaw.min.css")}--%>
 
-<%--${requestScope._this.registScript("js/jvectormap/jquery-jvectormap-1.2.2.min.js")}--%>
-<%--${requestScope._this.registScript("js/jvectormap/jquery-jvectormap-europe-merc-en.js")}--%>
-<%--${requestScope._this.registScript("js/jquery.sparkline.min.js")}--%>
-<%--${requestScope._this.registScript("js/rickshaw/vendor/d3.v3.js")}--%>
-<%--${requestScope._this.registScript("js/rickshaw/rickshaw.min.js")}--%>
-<%--${requestScope._this.registScript("js/raphael-min.js")}--%>
-<%--${requestScope._this.registScript("js/morris.min.js")}--%>
-${requestScope._this.registScript("js/toastr.js")}
-
+<%--${action.registScript("js/jvectormap/jquery-jvectormap-1.2.2.min.js")}--%>
+<%--${action.registScript("js/jvectormap/jquery-jvectormap-europe-merc-en.js")}--%>
+<%--${action.registScript("js/jquery.sparkline.min.js")}--%>
+<%--${action.registScript("js/rickshaw/vendor/d3.v3.js")}--%>
+<%--${action.registScript("js/rickshaw/rickshaw.min.js")}--%>
+<%--${action.registScript("js/raphael-min.js")}--%>
+<%--${action.registScript("js/morris.min.js")}--%>
+${action.registScript("js/toastr.js")}
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../../layouts/admin/head.jsp" %>
 <%@ include file="../../layouts/admin/header.jsp" %>
 
-<body class="page-body" data-url="">
 <div class="page-container">
   <%@ include file="../../layouts/admin/menu.jsp"%>
 
@@ -65,5 +63,4 @@ ${requestScope._this.registScript("js/toastr.js")}
 
 
 </div>
-</body>
 <%@ include file="../../layouts/admin/footer.jsp" %>
