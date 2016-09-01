@@ -1,0 +1,8 @@
+public class MockHttpServletResponse
+    // ...
+    public void setCharacterEncoding(String characterEncoding) {
+        this.characterEncoding = characterEncoding;
+        this.charset = true;
+        this.updateContentTypeHeader();
+    }
+}
